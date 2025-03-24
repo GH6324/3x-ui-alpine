@@ -81,7 +81,7 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://raw.githubusercontent.com/56idc/3x-ui-alpine/main/install_alpine.sh)
+    bash <(curl -Ls https://gh-proxy.com/raw.githubusercontent.com/GH6324/3x-ui-alpine/main/install_alpine.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -100,7 +100,7 @@ update() {
         fi
         return 0
     fi
-    bash <(curl -Ls https://raw.githubusercontent.com/56idc/3x-ui-alpine/main/install_alpine.sh)
+    bash <(curl -Ls https://gh-proxy.com/raw.githubusercontent.com/GH6324/3x-ui-alpine/main/install_alpine.sh)
     if [[ $? == 0 ]]; then
         LOGI "更新完成, 面板已自动重启"
         before_show_menu
@@ -118,7 +118,7 @@ update_menu() {
         return 0
     fi
 
-    wget --no-check-certificate -O /usr/bin/x-ui https://raw.githubusercontent.com/56idc/3x-ui-alpine/main/x-ui-alpine.sh
+    wget --no-check-certificate -O /usr/bin/x-ui https://gh-proxy.com/raw.githubusercontent.com/GH6324/3x-ui-alpine/main/x-ui-alpine.sh
     chmod +x /usr/bin/x-ui
 
     if [[ $? == 0 ]]; then
@@ -139,7 +139,7 @@ legacy_version() {
         exit 1
     fi
     # Use the entered panel version in the download link
-    install_command="bash <(curl -Ls "https://raw.githubusercontent.com/56idc/3x-ui-alpine/v$tag_version/install_alpine.sh") v$tag_version"
+    install_command="bash <(curl -Ls "https://gh-proxy.com/raw.githubusercontent.com/GH6324/3x-ui-alpine/v$tag_version/install_alpine.sh") v$tag_version"
 
     echo "下载安装x-ui版本: $tag_version..."
     eval $install_command
@@ -171,7 +171,7 @@ uninstall() {
     echo ""
     echo -e "卸载成功.\n"
     echo "如果需要再次安装此面板, 可以使用以下命令:"
-    echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/56idc/3x-ui-alpine/main/install_alpine.sh)${plain}"
+    echo -e "${green}bash <(curl -Ls https://gh-proxy.com/raw.githubusercontent.com/GH6324/3x-ui-alpine/main/install_alpine.sh)${plain}"
     echo ""
     # Trap the SIGTERM signal
     trap delete_script SIGTERM
@@ -444,7 +444,7 @@ enable_bbr() {
 }
 
 update_shell() {
-    wget -O /usr/bin/x-ui -N --no-check-certificate https://raw.githubusercontent.com/56idc/3x-ui-alpine/main/x-ui-alpine.sh
+    wget -O /usr/bin/x-ui -N --no-check-certificate https://gh-proxy.com/raw.githubusercontent.com/GH6324/3x-ui-alpine/main/x-ui-alpine.sh
     if [[ $? != 0 ]]; then
         echo ""
         LOGE "下载脚本失败, 请检查机器是否可以连接Github"
@@ -584,24 +584,24 @@ update_geo() {
     1)
         rc-service x-ui stop
         rm -f geoip.dat geosite.dat
-        wget https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
-        wget https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
+        wget https://gh-proxy.com/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
+        wget https://gh-proxy.com/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
         echo -e "${green}Loyalsoldier 数据升级成功!${plain}"
         rc-service x-ui start
         ;;
     2)
         rc-service x-ui stop
         rm -f geoip_IR.dat geosite_IR.dat
-        wget -O geoip_IR.dat -N https://github.com/chocolate4u/Iran-v2ray-rules/releases/latest/download/geoip.dat
-        wget -O geosite_IR.dat -N https://github.com/chocolate4u/Iran-v2ray-rules/releases/latest/download/geosite.dat
+        wget -O geoip_IR.dat -N https://gh-proxy.com/https://github.com/chocolate4u/Iran-v2ray-rules/releases/latest/download/geoip.dat
+        wget -O geosite_IR.dat -N https://gh-proxy.com/https://github.com/chocolate4u/Iran-v2ray-rules/releases/latest/download/geosite.dat
         echo -e "${green}chocolate4u 数据升级成功!${plain}"
         rc-service x-ui start
         ;;
     3)
         rc-service x-ui stop
         rm -f geoip_VN.dat geosite_VN.dat
-        wget -O geoip_VN.dat -N https://github.com/vuong2023/vn-v2ray-rules/releases/latest/download/geoip.dat
-        wget -O geosite_VN.dat -N https://github.com/vuong2023/vn-v2ray-rules/releases/latest/download/geosite.dat
+        wget -O geoip_VN.dat -N https://gh-proxy.com/https://github.com/vuong2023/vn-v2ray-rules/releases/latest/download/geoip.dat
+        wget -O geosite_VN.dat -N https://gh-proxy.com/https://github.com/vuong2023/vn-v2ray-rules/releases/latest/download/geosite.dat
         echo -e "${green}vuong2023 数据升级成功!${plain}"
         rc-service x-ui start
         ;;
