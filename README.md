@@ -1,4 +1,4 @@
-# 🚀 3x-ui-alpines 项目说明
+# 🚀 3x-ui-alpine 项目说明
 
 本项目基于 **[3X-UI 官方版本](https://github.com/MHSanaei/3x-ui)** 移植到 **Alpine** 系统，面板功能与官方版本完全一致。  
 如需使用面板，请参考官方文档。
