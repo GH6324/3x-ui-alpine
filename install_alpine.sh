@@ -100,7 +100,7 @@ install_x-ui() {
     ARCH=$(check_arch)
     
     if [ $# == 0 ]; then
-        tag_version=$(curl -Ls "https://api.github.com/repos/GH6324/3x-ui-alpine/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        tag_version=$(curl -Ls "https://proxy.api.030101.xyz/https://api.github.com/repos/GH6324/3x-ui-alpine/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$tag_version" ]]; then
             echo -e "${red}获取x-ui版本失败, 可能是GitHub API限制或网络连接失败, 请检查您的网络连接后重试...${plain}"
             exit 1
