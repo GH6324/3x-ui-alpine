@@ -21,6 +21,11 @@ bash <(curl -Ls https://gh-proxy.com/raw.githubusercontent.com/GH6324/3x-ui-alpi
 
 ## 📜 更新日志
 
+### 🗓️ 2025/04/18
+- 🔄 **同步官方版本 v2.5.7**  
+- 🌍 **支持 ARM64 架构 VPS**（实验性）  
+  - 如遇问题，请在 [Issues](https://github.com/GH6324/3x-ui-alpine/issues/new) 反馈。
+
 ### 🗓️ 2025/03/24
 - 🔄 **同步官方版本 v2.5.6**  
 - 🌍 **支持 IPv6 Only VPS**（实验性）  
