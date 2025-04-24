@@ -7,18 +7,8 @@ plain='\033[0m'
 
 cur_dir=$(pwd)
 
-# 检查root权限
+# check root
 [[ $EUID -ne 0 ]] && echo -e "${red}严重错误: ${plain} 请以 root 权限运行此脚本 \n " && exit 1
-
-# 检测架构
-check_arch() {
-    arch=$(uname -m)
-    if [[ $arch == "aarch64" || $arch == "arm64" ]]; then
-        echo "arm64"
-    else
-        echo "amd64"
-    fi
-}
 
 install_base() {
 	apk add --no-cache --update ca-certificates tzdata fail2ban bash
@@ -66,7 +56,7 @@ config_after_install() {
             echo -e "${green}面板路径: ${config_webBasePath}${plain}"
             echo -e "${green}访问面板URL: http://${server_ip}:${config_port}/${config_webBasePath}${plain}"
             echo -e "###############################################"
-            echo -e "${yellow}如果你忘记了登录信息, 你可以使用命令"x-ui settings"${plain}"
+            echo -e "${yellow}如果你忘记了登录信息, 你可以使用命令“x-ui settings”${plain}"
         else
             local config_webBasePath=$(gen_random_string 15)
             echo -e "${yellow}面板路径缺失或太短, 正在生成一个新的...${plain}"
@@ -86,7 +76,7 @@ config_after_install() {
             echo -e "${green}用户名: ${config_username}${plain}"
             echo -e "${green}密码: ${config_password}${plain}"
             echo -e "###############################################"
-            echo -e "${yellow}如果你忘记了登录信息, 你可以使用命令"x-ui settings"${plain}"
+            echo -e "${yellow}如果你忘记了登录信息, 你可以使用命令“x-ui settings”${plain}"
         else
             echo -e "${green}用户名, 密码和面板路径已正确设置. 退出...${plain}"
         fi
@@ -97,22 +87,14 @@ config_after_install() {
 
 install_x-ui() {
 	cd /usr/local
-    ARCH=$(check_arch)
-    
     if [ $# == 0 ]; then
-        tag_version=$(curl -Ls "https://proxy.api.030101.xyz/https://api.github.com/repos/GH6324/3x-ui-alpine/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        tag_version=$(curl -Ls "https://proxy.api.030101.xyz/api.github.com/repos/GH6324/3x-ui-alpine/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$tag_version" ]]; then
             echo -e "${red}获取x-ui版本失败, 可能是GitHub API限制或网络连接失败, 请检查您的网络连接后重试...${plain}"
             exit 1
         fi
         echo -e "获取x-ui最新版本: ${tag_version}, 开始安装..."
-        
-        if [[ "$ARCH" == "arm64" ]]; then
-            wget --no-check-certificate -O /usr/local/x-ui-linux-alpine-arm64.tar.gz https://gh-proxy.com/https://github.com/GH6324/3x-ui-alpine/releases/download/${tag_version}/x-ui-linux-alpine-arm64.tar.gz
-        else
-            wget --no-check-certificate -O /usr/local/x-ui-linux-alpine.tar.gz https://gh-proxy.com/https://github.com/GH6324/3x-ui-alpine/releases/download/${tag_version}/x-ui-linux-alpine.tar.gz
-        fi
-        
+        wget --no-check-certificate -O /usr/local/x-ui-linux-alpine.tar.gz https://gh-proxy.com/https://github.com/GH6324/3x-ui-alpine/releases/download/${tag_version}/x-ui-linux-alpine.tar.gz
         if [[ $? -ne 0 ]]; then
             echo -e "${red}下载 x-ui 失败, 请确保你的服务器可以访问 GitHub ${plain}"
             exit 1
@@ -126,16 +108,9 @@ install_x-ui() {
             exit 1
         fi
 
-        if [[ "$ARCH" == "arm64" ]]; then
-            url="https://gh-proxy.com/https://github.com/GH6324/3x-ui-alpine/releases/download/${tag_version}/x-ui-linux-alpine-arm64.tar.gz"
-            echo -e "开始安装x-ui $1 (ARM64版本)"
-            wget --no-check-certificate -O /usr/local/x-ui-linux-alpine-arm64.tar.gz ${url}
-        else
-            url="https://gh-proxy.com/https://github.com/GH6324/3x-ui-alpine/releases/download/${tag_version}/x-ui-linux-alpine.tar.gz"
-            echo -e "开始安装x-ui $1 (AMD64版本)"
-            wget --no-check-certificate -O /usr/local/x-ui-linux-alpine.tar.gz ${url}
-        fi
-        
+        url="https://gh-proxy.com/https://github.com/GH6324/3x-ui-alpine/releases/download/${tag_version}/x-ui-linux-alpine.tar.gz"
+        echo -e "开始安装x-ui $1"
+        wget --no-check-certificate -O /usr/local/x-ui-linux-alpine.tar.gz ${url}
         if [[ $? -ne 0 ]]; then
             echo -e "${red}下载x-ui $1 失败, 请检查版本是否存在 ${plain}"
             exit 1
@@ -155,24 +130,12 @@ install_x-ui() {
 	  fi
     fi
 
-    if [[ "$ARCH" == "arm64" ]]; then
-        tar zxvf x-ui-linux-alpine-arm64.tar.gz
-        rm x-ui-linux-alpine-arm64.tar.gz -f
-    else
-        tar zxvf x-ui-linux-alpine.tar.gz
-        rm x-ui-linux-alpine.tar.gz -f
-    fi
-    
+    tar zxvf x-ui-linux-alpine.tar.gz
+    rm x-ui-linux-alpine.tar.gz -f
     mv x-ui/app/* x-ui
     rm x-ui/app -rf
     rm x-ui/DockerEntrypoint.sh
-    
-    if [[ "$ARCH" == "arm64" ]]; then
-        chmod +x x-ui/x-ui x-ui/bin/xray-linux-arm64
-    else
-        chmod +x x-ui/x-ui x-ui/bin/xray-linux-amd64
-    fi
-    
+    chmod +x x-ui/x-ui x-ui/bin/xray-linux-amd64
     wget --no-check-certificate -O /usr/bin/x-ui https://gh-proxy.com/raw.githubusercontent.com/GH6324/3x-ui-alpine/main/x-ui-alpine.sh
     chmod +x /usr/bin/x-ui
     wget --no-check-certificate -O /etc/init.d/x-ui https://gh-proxy.com/raw.githubusercontent.com/GH6324/3x-ui-alpine/main/x-ui.rc
